@@ -1,6 +1,8 @@
 package com.tampro.appbanhang.model;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     public int Id;
     public String name;
     public int price;
