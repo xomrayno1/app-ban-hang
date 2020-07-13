@@ -1,6 +1,7 @@
 package com.tampro.appbanhang.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.tampro.appbanhang.R;
+import com.tampro.appbanhang.activity.ChiTietSanPham;
 import com.tampro.appbanhang.model.Product;
+import com.tampro.appbanhang.ultil.CheckConnection;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -83,6 +86,17 @@ public class ProductAdapter  extends RecyclerView.Adapter<ProductAdapter.ItemHol
             imgHinhAnhSanPham = (ImageView) itemView.findViewById(R.id.imageviewsanpham);
             txtGiaSanPham = (TextView) itemView.findViewById(R.id.textviewgiasanpham);
             txtTenSanPham = (TextView) itemView.findViewById(R.id.textviewtensanpham);
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ChiTietSanPham.class);
+                    intent.putExtra("thongtinsanpham",arrayProduct.get(getPosition()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    CheckConnection.ShowToast_Short(context,arrayProduct.get(getPosition()).getName());
+                    context.startActivity(intent);
+
+                }
+            });
         }
     }
 }

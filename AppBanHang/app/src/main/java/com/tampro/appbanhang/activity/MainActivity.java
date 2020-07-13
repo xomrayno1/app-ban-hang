@@ -1,6 +1,7 @@
 package com.tampro.appbanhang.activity;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -20,6 +23,7 @@ import android.widget.ViewFlipper;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
@@ -30,6 +34,7 @@ import com.tampro.appbanhang.R;
 import com.tampro.appbanhang.adapter.CategoryAdapter;
 import com.tampro.appbanhang.adapter.ProductAdapter;
 import com.tampro.appbanhang.model.Category;
+import com.tampro.appbanhang.model.GioHang;
 import com.tampro.appbanhang.model.Product;
 import com.tampro.appbanhang.ultil.CheckConnection;
 import com.tampro.appbanhang.ultil.Server;
@@ -54,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     String hinhanhloaisp = "";
     ArrayList<Product> mangProduct;
     ProductAdapter productAdapter;
+    public static ArrayList<GioHang> manggiohang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +72,28 @@ public class MainActivity extends AppCompatActivity {
             GetDuLieuLoaisp();
             GetDuLieuSPMoiNhat();
             CatchOnItemListView();
+
         }else{
             CheckConnection.ShowToast_Short(getApplicationContext(),"Bạn hãy kiếm tra lại kết nối");
             finish();;
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case  R.id.menugiohang :
+                Intent intent = new Intent(getApplicationContext(), com.tampro.appbanhang.activity.GioHang.class);
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void CatchOnItemListView() {
@@ -167,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
         requestQueue.add(jsonArrayRequest);
     }
 
@@ -195,9 +219,11 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                CheckConnection.ShowToast_Short(getApplicationContext(),error.toString());
+                CheckConnection.ShowToast_Short(getApplicationContext(),error.toString()+"rrr");
             }
         });
+
+
         requestQueue.add(jsonArrayRequest);
     }
 
@@ -249,5 +275,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewManHinhChinh.setHasFixedSize(true);
         recyclerViewManHinhChinh.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
         recyclerViewManHinhChinh.setAdapter(productAdapter);
+       if(manggiohang !=null){
+
+       }else{
+           manggiohang = new ArrayList<GioHang>();
+
+       }
     }
 }
